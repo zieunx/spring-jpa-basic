@@ -22,3 +22,19 @@
 
 
 
+처음에 SpringBoot 프로젝트로 생성해서 persistence 어노테이션들을 자동 import 했더니 javax.persistence 로 import 되어 에러가 발생했다. 해당 예제는 jakarta.persistence 에서 import 해야한다.
+
+Persistence 설정
+
+>  main > resources > META-INF > persistence.xml 
+
+
+
+<persistence-unit> 으로 설정된 유닛별로 설정을 따른다.
+
+다음과 같이 접근해주면 된다.
+
+```java
+Persistence.createEntityManagerFactory(persistence-unit의 name);
+```
+
