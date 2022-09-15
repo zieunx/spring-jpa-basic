@@ -14,7 +14,7 @@
 
 
 
-## 01 일단 해보기
+## 01 일단 해보기 - 02 코드 구조 & 영속 컨텍스트
 
 - 간단한 설정으로 클래스와 테이블 간 매핑 처리를 해보았다.
 - 객체 변경만으로 DB 테이블이 업데이트 되었다.
@@ -30,11 +30,21 @@ Persistence 설정
 
 
 
-<persistence-unit> 으로 설정된 유닛별로 설정을 따른다.
+영속 단위 기준으로  EntityManagerFactory 를 생성.
+
+<persistence-unit> 으로 설정된 유닛별로 영속성 관리 한다.
 
 다음과 같이 접근해주면 된다.
 
 ```java
 Persistence.createEntityManagerFactory(persistence-unit의 name);
 ```
+
+어플리케이션 최초 구동 시, EntityManagerFactory로 1번 영속한다.
+
+
+
+-> 대부분 Spring 이 대신 처리해주는 과정. 한번 알고가면 좋을 듯하다.
+
+
 
