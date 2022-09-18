@@ -1,5 +1,6 @@
-package com.jpa.basic.springjpabasic.domain;
+package com.jpa.basic.springjpabasic.main.begin;
 
+import com.jpa.basic.springjpabasic.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
