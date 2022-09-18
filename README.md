@@ -90,15 +90,18 @@ Persistence.createEntityManagerFactory(persistence-unit의 name);
     transaction.commit();
     log.info("커밋 완료");
     ```
+    
     위의 코드는 아래의 로그를 통해서 INSERT 문을 먼저 실행하여 식별자를 가져온다는 것을 알 수 있다. 이미 INSERT 문을 식별자 생성 방식때메 이미 실행했기 때문에 커밋 시 INSERT 문이 실행되지 않는다.
-	```planText
+    
+    ```text
     18:17:55.628 [main] INFO  c.j.b.s.identifier.NativeMain - persist 실행 전
-18:17:55.652 [main] DEBUG org.hibernate.SQL - insert into Review (comment, created, hotel_id, mark, writer_name) values (?, ?, ?, ?, ?)
-18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - persist 실행 후
-18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - 생성한 식별자: 1
-18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - 커밋 전
-18:17:55.710 [main] INFO  c.j.b.s.identifier.NativeMain - 커밋 완료
+    18:17:55.652 [main] DEBUG org.hibernate.SQL - insert into Review (comment, created, hotel_id, mark, writer_name) values (?, ?, ?, ?, ?)
+    18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - persist 실행 후
+    18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - 생성한 식별자: 1
+    18:17:55.697 [main] INFO  c.j.b.s.identifier.NativeMain - 커밋 전
+    18:17:55.710 [main] INFO  c.j.b.s.identifier.NativeMain - 커밋 완료
     ```
+    
 - GenerationType.SEQUENCE
 	- SEQUENCE 를 사용할 때 Long 타입 권장.
 	- 테이블마다 다른 시퀀스를 사용하고 싶으면 @SequenctGenerator 사용
@@ -119,14 +122,16 @@ Persistence.createEntityManagerFactory(persistence-unit의 name);
     transaction.commit();
     ```
     위의 코드는 아래의 로그를 통해서 시퀀스를 이용하여 식별자를 먼저 구하고 커밋을 통해 ISERT를 실행하는 것을 확인할 수 있다.
-	```planText
+
+
+    ```
     21:02:18.399 [main] INFO  c.j.b.s.main.identifier.SequenceMain - persist 실행 전
-21:02:18.405 [main] DEBUG org.hibernate.SQL - select activity_seq.nextval from dual
-21:02:18.446 [main] INFO  c.j.b.s.main.identifier.SequenceMain - persist 실행 후
-21:02:18.447 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 생성한 식별자: 1
-21:02:18.447 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 커밋 전
-21:02:18.455 [main] DEBUG org.hibernate.SQL - insert into activity_log (activity_type, created, user_id, id) values (?, ?, ?, ?)
-21:02:18.493 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 커밋 완료
+    21:02:18.405 [main] DEBUG org.hibernate.SQL - select activity_seq.nextval from dual
+    21:02:18.446 [main] INFO  c.j.b.s.main.identifier.SequenceMain - persist 실행 후
+    21:02:18.447 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 생성한 식별자: 1
+    21:02:18.447 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 커밋 전
+    21:02:18.455 [main] DEBUG org.hibernate.SQL - insert into activity_log (activity_type, created, user_id, id) values (?, ?, ?, ?)
+    21:02:18.493 [main] INFO  c.j.b.s.main.identifier.SequenceMain - 커밋 완료
     ```
 - GenerationType.TABLE
 	- 키 생성용 테이블을 사용
@@ -149,17 +154,19 @@ Persistence.createEntityManagerFactory(persistence-unit의 name);
     transaction.commit();
     log.info("커밋 완료");
     ```
+    
     위의 코드는 아래의 로그를 통해서 persist 시 식별자용테이블에 접근하여 시퀀스를 설정한다.
-	```
+
+    ```
     21:16:02.251 [main] INFO  c.j.b.s.main.identifier.TableMain - persist 실행 전
-21:16:02.287 [main] DEBUG org.hibernate.SQL - select tbl.nextval from id_seq tbl where tbl.entity=? for update
-21:16:02.304 [main] DEBUG org.hibernate.SQL - update id_seq set nextval=?  where nextval=? and entity=?
-21:16:02.322 [main] INFO  c.j.b.s.main.identifier.TableMain - persist 실행 후
-21:16:02.322 [main] INFO  c.j.b.s.main.identifier.TableMain - 생성한 식별자: 4
-21:16:02.323 [main] INFO  c.j.b.s.main.identifier.TableMain - 커밋 전
-21:16:02.343 [main] DEBUG org.hibernate.SQL - insert into access_log (accessed, path, id) values (?, ?, ?)
-21:16:02.359 [main] INFO  c.j.b.s.main.identifier.TableMain - 커밋 완료
+    21:16:02.287 [main] DEBUG org.hibernate.SQL - select tbl.nextval from id_seq tbl where tbl.entity=? for update
+    21:16:02.304 [main] DEBUG org.hibernate.SQL - update id_seq set nextval=?  where nextval=? and entity=?
+    21:16:02.322 [main] INFO  c.j.b.s.main.identifier.TableMain - persist 실행 후
+    21:16:02.322 [main] INFO  c.j.b.s.main.identifier.TableMain - 생성한 식별자: 4
+    21:16:02.323 [main] INFO  c.j.b.s.main.identifier.TableMain - 커밋 전
+    21:16:02.343 [main] DEBUG org.hibernate.SQL - insert into access_log (accessed, path, id) values (?, ?, ?)
+    21:16:02.359 [main] INFO  c.j.b.s.main.identifier.TableMain - 커밋 완료
     ```
 - GenerationType.AUTO
 	- 방언에 따라 자동 지정, 기본 값
-
+	
