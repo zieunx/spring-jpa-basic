@@ -33,3 +33,16 @@ create table id_seq (
     entity  varchar(100) not null primary key,
     nextval bigint
 ) engine innodb character set utf8mb4;
+
+create table jpabegin.role (
+    id       varchar(10) not null primary key,
+    name     varchar(20)
+) engine innodb character set utf8mb4;
+
+drop  table jpabegin.role_perm;
+create table jpabegin.role_perm (
+    role_id varchar(10) not null,
+    perm    varchar(20) primary key,
+    grantor varchar(20),
+    foreign key (role_id) references `role` (id)
+) engine innodb character set utf8mb4;

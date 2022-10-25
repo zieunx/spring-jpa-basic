@@ -10,6 +10,7 @@
         <class>com.jpa.basic.springjpabasic.domain.User</class>
         <class>com.jpa.basic.springjpabasic.domain.Review</class>
         <class>com.jpa.basic.springjpabasic.domain.AccessLog</class>
+        <class>com.jpa.basic.springjpabasic.domain.Role</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

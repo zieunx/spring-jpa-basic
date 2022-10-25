@@ -169,4 +169,58 @@ Persistence.createEntityManagerFactory(persistence-unit의 name);
     ```
 - GenerationType.AUTO
 	- 방언에 따라 자동 지정, 기본 값
-	
+
+
+
+-----
+
+# 콜렉션과 연관관계 매핑
+-----
+- @Entity에서 @ElementCollection, @CollectionTable 사용
+- @Embeddable 타입으로 매핑 가능
+- 콜렉션 새로 할당 시, 콜렉션을 전체 delete 후 각각 insert
+- @Embeddable 타입은 equals(), hashCode() 를 overidding 해주어야 한다.
+(@EqualsAndHashCode(..) 사용하는것도 방법)
+
+### @ElementCollection의 조회방식 (LAZY 와 EAGER)
+```java
+transaction.begin();
+
+log.info("find 실행 전");
+Role role = em.find(Role.class, roleId);
+log.info("find 실행 후");
+
+for (GrantedPermission perm : role.getPermissions()) {
+    log.info("perm : {}", perm);
+}
+
+transaction.commit();
+```
+1. RAZY(default)
+	```
+[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
+[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name from role r1_0 where r1_0.id=?
+[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
+[main] DEBUG org.hibernate.SQL - select p1_0.role_id,p1_0.grantor,p1_0.perm from role_perm p1_0 where p1_0.role_id=?
+[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
+[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
+    ```
+    위처럼 `Role` 조회 후 Permission를 조회하려고 할 때 별도로 쿼리가 날아간다.
+2. EAGER
+	```
+[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
+[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name,p1_0.role_id,p1_0.grantor,p1_0.perm from role r1_0 left join role_perm p1_0 on r1_0.id=p1_0.role_id where r1_0.id=?
+[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
+[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
+[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
+    ```
+	@ElementCollection(fetch = FetchType.EAGER)의 fetch 설정을 EAGER 로 설정하면 Role 조회 시 join 하여 쿼리가 날아간다.
+
+
+### List
+@OrderColum(..) 으로 순서 인덱스 컬럼 매핑 (0부터 순차 저장)
+
+### Map
+@MapKeyColum(name = "컬럼명") 사용하여 컬럼값 매핑
+
+**성능 문제를 야기할 수 있음을 주의해야 한다.**
