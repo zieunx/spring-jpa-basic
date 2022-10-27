@@ -198,22 +198,22 @@ transaction.commit();
 ```
 1. RAZY(default)
 	```
-[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
-[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name from role r1_0 where r1_0.id=?
-[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
-[main] DEBUG org.hibernate.SQL - select p1_0.role_id,p1_0.grantor,p1_0.perm from role_perm p1_0 where p1_0.role_id=?
-[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
-[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
-    ```
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
+	[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name from role r1_0 where r1_0.id=?
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
+	[main] DEBUG org.hibernate.SQL - select p1_0.role_id,p1_0.grantor,p1_0.perm from role_perm p1_0 where p1_0.role_id=?
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
+	```
     위처럼 `Role` 조회 후 Permission를 조회하려고 할 때 별도로 쿼리가 날아간다.
 2. EAGER
 	```
-[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
-[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name,p1_0.role_id,p1_0.grantor,p1_0.perm from role r1_0 left join role_perm p1_0 on r1_0.id=p1_0.role_id where r1_0.id=?
-[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
-[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
-[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
-    ```
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 전
+	[main] DEBUG org.hibernate.SQL - select r1_0.id,r1_0.name,p1_0.role_id,p1_0.grantor,p1_0.perm from role r1_0 left join role_perm p1_0 on r1_0.id=p1_0.role_id where r1_0.id=?
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - find 실행 후
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-3', grantor='g-1'}
+	[main] INFO  c.j.b.s.main.identifier.NativeMain - perm : GrantedPermission{permission='perm-4', grantor='g-2'}
+    	```
 	@ElementCollection(fetch = FetchType.EAGER)의 fetch 설정을 EAGER 로 설정하면 Role 조회 시 join 하여 쿼리가 날아간다.
 
 
